@@ -13,6 +13,7 @@ angular.module('alurapic').controller('FotosController', function($scope, $http)
 			url: 'http://images.terra.com/2015/07/09/leao.png'
 		}*/
 	];
+	$scope.filtro = '';
 
 	$http.get('/v1/fotos')
 	.success(function(retorno) {
