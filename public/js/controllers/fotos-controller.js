@@ -1,19 +1,8 @@
 angular.module('alurapic').controller('FotosController', function($scope, $http) {
-	$scope.fotos = [
-		/*{
-			titulo: 'Leão 1',
-			url: 'http://images.terra.com/2015/07/09/leao.png'
-		},
-		{
-			titulo: 'Leão 2',
-			url: 'http://images.terra.com/2015/07/09/leao.png'
-		},
-		{
-			titulo: 'Leão 3',
-			url: 'http://images.terra.com/2015/07/09/leao.png'
-		}*/
-	];
+	
+	$scope.fotos = [];
 	$scope.filtro = '';
+	$scope.mensagem = '';
 
 	$http.get('/v1/fotos')
 	.success(function(retorno) {
@@ -23,11 +12,17 @@ angular.module('alurapic').controller('FotosController', function($scope, $http)
 		console.log(erro);
 	});
 
+	$scope.remover = function(foto) {
+		$http.delete('v1/fotos/' + foto._id)
+		.success(function() {
+			var indiceFoto = $scope.fotos.indexOf(foto);
+			$scope.fotos.splice(indiceFoto, 1);
+			$scope.mensagem = 'Foto ' + foto.titulo + ' foi removida com sucesso!';
+		})
+		.error(function(erro) {
+			console.log(erro);
+			$scope.mensagem = 'Não foi possível remover a foto ' + foto.titulo;
+		});
+	};
 
-	/*var promise = $http.get('v1/fotos');
-	promise.then(function(retorno) {
-		$scope.fotos = retorno.data;
-	}).catch(function(error){
-		console.log(error);
-	});*/
 });
